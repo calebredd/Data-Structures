@@ -12,25 +12,69 @@ This part of the project comprises two days:
 class BSTNode:
     def __init__(self, value):
         self.value = value
-        self.left = None
-        self.right = None
+        self.left = None #Other Binary Search Trees
+        self.right = None #Other Binary Search Trees
 
     # Insert the given value into the tree
     def insert(self, value):
-        pass
-
+    #Thought behind tracking to end position:
+        if self.value:
+            if self.value > value:
+                if self.left:
+                    self.left.insert(value)
+                else:
+                    self.left = BSTNode(value)
+            else:
+                if self.right:
+                    self.right.insert(value)
+                else:
+                    self.right = BSTNode(value)
+        else:
+            self.value = BSTNode(value)
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
-        pass
+        # Does the current value exist
+        if self.value:
+            # Compare current value to the target
+            if self.value == target:
+                return True
+            # If target is less than current value  
+            if self.value > target:
+            # if left value exists check left
+                if self.left:
+                    return self.left.contains(target)
+                # If left value doesn't exist Else Return False
+                else: return False
+
+            # If target is greater than current value 
+            else:
+            # if right value exists check right
+                if self.right:
+                    return self.right.contains(target)
+                # If right value doesn't exist Else Return False
+                else: return False
+        # Return False
+        else:
+            return False
+
 
     # Return the maximum value found in the tree
     def get_max(self):
-        pass
+        if self.value:
+            if self.right:
+                return self.right.get_max()
+            else: return self.value
+        else: return None
 
     # Call the function `fn` on the value of each node
     def for_each(self, fn):
-        pass
+        fn(self.value)
+        if self.left:
+            self.left.for_each(fn)
+        if self.right:
+            self.right.for_each(fn)
+        
 
     # Part 2 -----------------------
 
@@ -59,3 +103,4 @@ class BSTNode:
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
         pass
+

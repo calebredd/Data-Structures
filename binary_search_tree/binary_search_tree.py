@@ -9,6 +9,28 @@ This part of the project comprises two days:
 2. Implement the `in_order_print`, `bft_print`, and `dft_print` methods
    on the BSTNode class.
 """
+import sys
+
+sys.path.append('../doubly_linked_list')
+from doubly_linked_list import DoublyLinkedList
+
+sys.path.append('../stack')
+from stack import Stack
+
+class Queue:
+    def __init__(self):
+        self.size = 0
+        self.storage = DoublyLinkedList()
+    
+    def __len__(self):
+        return self.storage.length
+
+    def enqueue(self, value):
+        return self.storage.add_to_tail(value)
+
+    def dequeue(self):
+        return self.storage.remove_from_head()
+
 class BSTNode:
     def __init__(self, value):
         self.value = value
@@ -69,7 +91,9 @@ class BSTNode:
 
     # Call the function `fn` on the value of each node
     def for_each(self, fn):
+
         fn(self.value)
+
         if self.left:
             self.left.for_each(fn)
         if self.right:
@@ -81,26 +105,79 @@ class BSTNode:
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+
+        if self.left:
+            self.left.in_order_print(node)
+
+        print(self.value)
+
+        if self.right:
+            self.right.in_order_print(node)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self, node):
-        pass
+
+        print(self.value)
+        stack = Stack()
+        if self.left:
+            stack.push(self.left)
+        if self.right:
+            stack.push(self.right)
+        while stack.__len__():
+            newNode = stack.pop()
+            newNode.bft_print(node)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self, node):
-        pass
+
+        print(self.value)
+        newQueue = Queue()
+        if self.left:
+            newQueue.enqueue(self.left)
+        if self.right:
+            newQueue.enqueue(self.right)
+        while newQueue.__len__():
+            newNode = newQueue.dequeue()
+            newNode.dft_print(node)
 
     # Stretch Goals -------------------------
     # Note: Research may be required
 
     # Print Pre-order recursive DFT
     def pre_order_dft(self, node):
-        pass
+
+        print(self.value)
+
+        if self.left:
+            self.left.pre_order_dft(node)
+
+        if self.right:
+            self.right.pre_order_dft(node)
 
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
-        pass
 
+        if self.left:
+            self.left.post_order_dft(node)
+
+        if self.right:
+            self.right.post_order_dft(node)
+
+        print(self.value)
+
+# bst = BSTNode(1)
+# bst.insert(8)
+# bst.insert(5)
+# bst.insert(7)
+# bst.insert(6)
+# bst.insert(3)
+# bst.insert(4)
+# bst.insert(2)
+# print("DFT:")
+# bst.dft_print(bst)
+# print("\n")
+# print("\n")
+# print("BFT:")
+# bst.bft_print(bst)

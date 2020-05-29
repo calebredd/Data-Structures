@@ -11,25 +11,10 @@ This part of the project comprises two days:
 """
 import sys
 
-sys.path.append('../doubly_linked_list')
-from doubly_linked_list import DoublyLinkedList
-
 sys.path.append('../stack')
 from stack import Stack
 
-class Queue:
-    def __init__(self):
-        self.size = 0
-        self.storage = DoublyLinkedList()
-    
-    def __len__(self):
-        return self.storage.length
-
-    def enqueue(self, value):
-        return self.storage.add_to_tail(value)
-
-    def dequeue(self):
-        return self.storage.remove_from_head()
+from collections import deque 
 
 class BSTNode:
     def __init__(self, value):
@@ -118,6 +103,21 @@ class BSTNode:
     # in an iterative breadth first traversal
     def bft_print(self, node):
 
+        queue = deque()
+        queue.append(self)
+
+        while len(queue):
+            current = queue.popleft()
+            if current.right:
+                queue.append(current.right)
+            if current.left:
+                queue.append(current.left)
+            print(current.value)
+
+    # Print the value of every node, starting with the given node,
+    # in an iterative depth first traversal
+    def dft_print(self, node):
+
         print(self.value)
         stack = Stack()
         if self.left:
@@ -126,20 +126,6 @@ class BSTNode:
             stack.push(self.right)
         while stack.__len__():
             newNode = stack.pop()
-            newNode.bft_print(node)
-
-    # Print the value of every node, starting with the given node,
-    # in an iterative depth first traversal
-    def dft_print(self, node):
-
-        print(self.value)
-        newQueue = Queue()
-        if self.left:
-            newQueue.enqueue(self.left)
-        if self.right:
-            newQueue.enqueue(self.right)
-        while newQueue.__len__():
-            newNode = newQueue.dequeue()
             newNode.dft_print(node)
 
     # Stretch Goals -------------------------
@@ -167,17 +153,3 @@ class BSTNode:
 
         print(self.value)
 
-# bst = BSTNode(1)
-# bst.insert(8)
-# bst.insert(5)
-# bst.insert(7)
-# bst.insert(6)
-# bst.insert(3)
-# bst.insert(4)
-# bst.insert(2)
-# print("DFT:")
-# bst.dft_print(bst)
-# print("\n")
-# print("\n")
-# print("BFT:")
-# bst.bft_print(bst)
